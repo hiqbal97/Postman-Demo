@@ -11,7 +11,7 @@
   - `list_specs()` / `delete_spec()`: Clean up older specs with the same name.
   - `list_collections()` / `delete_collection()`: Replace any existing collection with the same name.
   - `set_prerequest_script()` / `check_prerequest_script()`: Apply the client-credentials pre-request script that fetches and caches a JWT.
-  - `upsert_environment()`: Create/update Dev/QA/UAT/Prod environments with `base_url`.
+  - `create_environment()`: Create/update Dev/QA/UAT/Prod environments with `base_url`.
 
 - **Triggers (GitHub Actions)**: `.github/workflows/Sync API to Postman.yml` runs on `push` to `specs/**` (and manual dispatch). Uses Python 3.11 and `requirements.txt`.
 
