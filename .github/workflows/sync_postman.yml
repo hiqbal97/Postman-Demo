@@ -5,6 +5,10 @@ on:
     paths:
       - 'specs/**'
 
+env:
+  POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+  WORKSPACE_ID: ${{ secrets.POSTMAN_WORKSPACE_ID }}
+
 jobs:
   sync-specs:
     runs-on: ubuntu-latest
@@ -15,17 +19,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install requests
+          pip install python-dotenv
 
       - name: Upload Spec & Generate Collection
-        env:
-          POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
-          WORKSPACE_ID: ${{ secrets.POSTMAN_WORKSPACE_ID }}
         run: |
-          python ingest_spec_to_postman.py \
-            --api-key "${POSTMAN_API_KEY}" \
-            --workspace-id "${WORKSPACE_ID}" \
-            --spec-file "specs/payment-refund-api-openapi.yaml" \
-            --output-dir ./generated
+          python ingest_spec.py
 
       - name: Archive generated artifacts
         uses: actions/upload-artifact@v4
