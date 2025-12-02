@@ -1,0 +1,32 @@
+name: Sync API Specs to Postman
+
+on:
+  push:
+    paths:
+      - 'specs/**'
+
+env:
+  POSTMAN_API_KEY: ${{ secrets.POSTMAN_API_KEY }}
+  WORKSPACE_ID: ${{ secrets.POSTMAN_WORKSPACE_ID }}
+
+jobs:
+  sync-specs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+          pip install python-dotenv
+
+      - name: Upload Spec & Generate Collection
+        run: |
+          python ingest_spec.py
+
+      - name: Archive generated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: postman-generated
+          path: ./generated
