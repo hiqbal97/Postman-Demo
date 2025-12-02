@@ -31,11 +31,11 @@
   - Push changes under `specs/` or use the “Run workflow” button. The Action installs deps from `requirements.txt` and executes `python ingest_spec.py`.
 
 **Business Value**
-- Problem: Integrating a single refund API took 47 minutes (6 systems, 3 dead ends, personal workspace fallback). Typical internal API discovery takes 2–4 hours because specs, collections, environments, and auth are fragmented or inconsistent.
+- Problem: Integrating a single refund API took 47 minutes (6 systems, 3 dead ends, personal workspace fallback). Typical internal API discovery takes 2-4 hours because specs, collections, environments, and auth are fragmented or inconsistent.
 - Outcome: The workflow programmatically uploads OpenAPI specs, regenerates collections, inserts a JWT client-credentials flow, creates all environments, dedupes old specs/collections, and makes sure the naming/structure/auth is correct. CloudFormation tempale exports to GitHub which then uses the script to ingest into Postman means engineers start with a working, authenticated request in seconds instead of hours.
 
 **ROI**
-- Baseline savings (arbitrary hourly cost) from the 47-minute effort: 0.78 hours × 14 engineers = 10.92 hours/week → ~$1,092/week at $100/hr → ~$56,784/year.
+- Baseline savings (arbitrary hourly cost) from the 47 minute effort: 0.78 hours × 14 engineers = 10.92 hours/week → ~$1,092/week at $100/hr → ~$56,784/year.
 - Broader impact: applies across all 47 APIs, cutting discovery-to-first-call from 2–4 hours to seconds; reduces onboarding/testing/integration time and reliance on tribal knowledge.
 
 **Scaling Strategy**
@@ -44,7 +44,12 @@
 - No per-API customization needed; new/updated APIs flow into Postman consistently.
 
 **Workspace Consolidation**
-- Current state: hundreds of shared workspaces, inconsistent naming/ownership, scattered collections.
-- Segmentation: shift to domain workspaces (Payments, Auth, Risk, Ledger, Data, etc.); move existing collections/specs into the matching domain; keep personal/experimental work in sandboxes, not shared workspaces.
-- Governance: use Postman team merge/governance; ingestion automation is the source of truth for collections/specs; enforce naming, auth, and environment standards; assign workspace owners (eng lead + PM) accountable for hygiene; run periodic reviews to deprecate stale collections.
+- Current state: 413 shared workspaces, inconsistent naming/ownership, scattered collections.
+- Steps:
+  1) Stand up domain workspaces (Payments, Auth, Risk, Ledger, Data, etc.).
+  2) Use Postman team merge/governance: start a team merge from Admin > Team Merge, choose the source team, review/accept the merge summary, and complete the merge so personal/legacy workspaces roll into the right domain.
+  3) Move collections/specs into their domain workspace; keep experiments in personal/sandbox workspaces only.
+  4) Make the ingestion automation the source of truth for domain workspaces; minimize ad-hoc manual edits.
+  5) Assign workspace owners (eng lead + PM) and review quarterly to archive/deprecate stale collections.
+- Results: fewer places to search, clear ownership, consistent auth/environments, faster discovery for every API.
 - Result: reduced sprawl, clearer ownership, predictable discovery paths, and consistent auth/env across every internal API.
