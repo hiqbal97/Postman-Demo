@@ -1,6 +1,7 @@
 name: Sync API Specs to Postman
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - 'specs/**'
