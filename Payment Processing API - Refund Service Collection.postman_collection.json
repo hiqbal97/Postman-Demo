@@ -1,0 +1,1899 @@
+{
+	"info": {
+		"_postman_id": "5bc200b9-6c9a-41f8-920d-8f3d307df892",
+		"name": "Payment Processing API - Refund Service Collection",
+		"description": "Comprehensive API for managing payment refunds in a financial services platform.\nThis API handles refund creation, status tracking, cancellation, and reporting for\npayment transactions processed through the authorization and capture workflow.\n\n**Authentication:**\n- External partners: OAuth 2.0 (Bearer token)\n- Internal services: JWT token (Bearer token)\n\n**Rate Limits:**\n- Standard tier: 100 requests/minute\n- Enterprise tier: 1000 requests/minute\n\n\nContact Support:\n Name: Payment Platform Team\n Email: payment-platform@example.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5206101"
+	},
+	"item": [
+		{
+			"name": "refunds",
+			"item": [
+				{
+					"name": "{refundId}",
+					"item": [
+						{
+							"name": "status",
+							"item": [
+								{
+									"name": "Get refund status",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/refunds/:refundId/status",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"refunds",
+												":refundId",
+												"status"
+											],
+											"variable": [
+												{
+													"key": "refundId",
+													"value": "rfnd_vSdPnetdX",
+													"description": "Unique identifier for the refund"
+												}
+											]
+										},
+										"description": "Retrieves the current status of a refund. This is a lightweight endpoint\noptimized for frequent polling. Returns minimal data compared to the full\nrefund details endpoint.\n"
+									},
+									"response": [
+										{
+											"name": "Refund status retrieved successfully",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/status",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"status"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"refundId\": \"rfnd_fqK0gwm2oA\",\n  \"status\": \"processing\",\n  \"updatedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"failedAt\": \"<dateTime>\",\n  \"estimatedCompletionTime\": \"<dateTime>\",\n  \"failureReason\": \"<string>\"\n}"
+										},
+										{
+											"name": "Unauthorized - Invalid or missing authentication",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/status",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"status"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+										},
+										{
+											"name": "Refund not found",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/status",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"status"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+										},
+										{
+											"name": "Internal server error",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/status",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"status"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "cancel",
+							"item": [
+								{
+									"name": "Cancel a pending refund",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											},
+											{
+												"key": "Accept",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"reason\": \"<string>\"\n}",
+											"options": {
+												"raw": {
+													"headerFamily": "json",
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/refunds/:refundId/cancel",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"refunds",
+												":refundId",
+												"cancel"
+											],
+											"variable": [
+												{
+													"key": "refundId",
+													"value": "rfnd_vSdPnetdX",
+													"description": "Unique identifier for the refund"
+												}
+											]
+										},
+										"description": "Cancels a refund that is in 'pending' status. Once a refund has started\nprocessing or is completed, it cannot be cancelled. The refund will be\nimmediately moved to 'cancelled' status.\n"
+									},
+									"response": [
+										{
+											"name": "Refund cancelled successfully",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"reason\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/cancel",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"cancel"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"refundId\": \"rfnd_Mr\",\n  \"transactionId\": \"txn_QzMfUB\",\n  \"status\": \"pending\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"refundAmount\": \"<integer>\",\n  \"refundCurrency\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"cancelledAt\": \"<dateTime>\",\n  \"failedAt\": \"<dateTime>\",\n  \"estimatedCompletionTime\": \"<dateTime>\",\n  \"cancellationReason\": \"<string>\",\n  \"failureReason\": \"<string>\",\n  \"failureCode\": \"<string>\",\n  \"processingTime\": \"<integer>\",\n  \"metadata\": {\n    \"key_0\": false\n  },\n  \"links\": {\n    \"self\": \"<string>\",\n    \"status\": \"<string>\",\n    \"cancel\": \"<string>\",\n    \"retry\": \"<string>\",\n    \"transaction\": \"<string>\"\n  }\n}"
+										},
+										{
+											"name": "Bad request - Cannot cancel refund",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"reason\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/cancel",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"cancel"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+										},
+										{
+											"name": "Unauthorized - Invalid or missing authentication",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"reason\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/cancel",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"cancel"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "Unauthorized",
+											"code": 401,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+										},
+										{
+											"name": "Refund not found",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"reason\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/cancel",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"cancel"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+										},
+										{
+											"name": "Internal server error",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													},
+													{
+														"key": "Accept",
+														"value": "application/json"
+													},
+													{
+														"key": "Authorization",
+														"value": "<token>",
+														"description": "Added as a part of security scheme: oauth2"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n  \"reason\": \"<string>\"\n}",
+													"options": {
+														"raw": {
+															"headerFamily": "json",
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/refunds/:refundId/cancel",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"refunds",
+														":refundId",
+														"cancel"
+													],
+													"variable": [
+														{
+															"key": "refundId",
+															"value": "rfnd_vSdPnetdX",
+															"description": "Unique identifier for the refund"
+														}
+													]
+												}
+											},
+											"status": "Internal Server Error",
+											"code": 500,
+											"_postman_previewlanguage": "json",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "application/json"
+												}
+											],
+											"cookie": [],
+											"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "Get refund details",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/refunds/:refundId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds",
+										":refundId"
+									],
+									"variable": [
+										{
+											"key": "refundId",
+											"value": "rfnd_vSdPnetdX",
+											"description": "Unique identifier for the refund"
+										}
+									]
+								},
+								"description": "Retrieves detailed information about a specific refund by its ID.\nIncludes full status history, processing details, and related transaction information.\n"
+							},
+							"response": [
+								{
+									"name": "Refund details retrieved successfully",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "<token>",
+												"description": "Added as a part of security scheme: oauth2"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/refunds/:refundId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"refunds",
+												":refundId"
+											],
+											"variable": [
+												{
+													"key": "refundId",
+													"value": "rfnd_vSdPnetdX",
+													"description": "Unique identifier for the refund"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"refundId\": \"rfnd_GCbY4L7\",\n  \"transactionId\": \"txn_5rT1\",\n  \"status\": \"processing\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"refundAmount\": \"<integer>\",\n  \"refundCurrency\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"cancelledAt\": \"<dateTime>\",\n  \"failedAt\": \"<dateTime>\",\n  \"estimatedCompletionTime\": \"<dateTime>\",\n  \"cancellationReason\": \"<string>\",\n  \"failureReason\": \"<string>\",\n  \"failureCode\": \"<string>\",\n  \"processingTime\": \"<integer>\",\n  \"metadata\": {\n    \"key_0\": 829.6018240849668\n  },\n  \"links\": {\n    \"self\": \"<string>\",\n    \"status\": \"<string>\",\n    \"cancel\": \"<string>\",\n    \"retry\": \"<string>\",\n    \"transaction\": \"<string>\"\n  },\n  \"statusHistory\": [\n    {\n      \"status\": \"pending\",\n      \"timestamp\": \"<dateTime>\",\n      \"message\": \"<string>\"\n    },\n    {\n      \"status\": \"pending\",\n      \"timestamp\": \"<dateTime>\",\n      \"message\": \"<string>\"\n    }\n  ],\n  \"paymentGatewayRefundId\": \"<string>\"\n}"
+								},
+								{
+									"name": "Unauthorized - Invalid or missing authentication",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "<token>",
+												"description": "Added as a part of security scheme: oauth2"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/refunds/:refundId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"refunds",
+												":refundId"
+											],
+											"variable": [
+												{
+													"key": "refundId",
+													"value": "rfnd_vSdPnetdX",
+													"description": "Unique identifier for the refund"
+												}
+											]
+										}
+									},
+									"status": "Unauthorized",
+									"code": 401,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+								},
+								{
+									"name": "Refund not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "<token>",
+												"description": "Added as a part of security scheme: oauth2"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/refunds/:refundId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"refunds",
+												":refundId"
+											],
+											"variable": [
+												{
+													"key": "refundId",
+													"value": "rfnd_vSdPnetdX",
+													"description": "Unique identifier for the refund"
+												}
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+								},
+								{
+									"name": "Internal server error",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Accept",
+												"value": "application/json"
+											},
+											{
+												"key": "Authorization",
+												"value": "<token>",
+												"description": "Added as a part of security scheme: oauth2"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/refunds/:refundId",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"refunds",
+												":refundId"
+											],
+											"variable": [
+												{
+													"key": "refundId",
+													"value": "rfnd_vSdPnetdX",
+													"description": "Unique identifier for the refund"
+												}
+											]
+										}
+									},
+									"status": "Internal Server Error",
+									"code": 500,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										}
+									],
+									"cookie": [],
+									"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Create a new refund",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/refunds",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"refunds"
+							]
+						},
+						"description": "Initiates a refund for a previously captured payment transaction. The refund\ncan be for the full amount or a partial amount. The refund status will be\n'pending' initially and transition to 'completed' or 'failed' based on\nprocessing results.\n\n**Business Rules:**\n- Refunds can only be issued for transactions in 'captured' status\n- Partial refunds must not exceed the original transaction amount\n- Refunds cannot be created more than 180 days after the original transaction\n- Maximum of 5 refunds per transaction\n"
+					},
+					"response": [
+						{
+							"name": "Refund created successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Location",
+									"value": "<uri>",
+									"description": {
+										"content": "URI of the created refund resource",
+										"type": "text/plain"
+									}
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"refundId\": \"rfnd_Mr\",\n  \"transactionId\": \"txn_QzMfUB\",\n  \"status\": \"pending\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"<string>\",\n  \"refundAmount\": \"<integer>\",\n  \"refundCurrency\": \"<string>\",\n  \"reason\": \"<string>\",\n  \"createdAt\": \"<dateTime>\",\n  \"updatedAt\": \"<dateTime>\",\n  \"completedAt\": \"<dateTime>\",\n  \"cancelledAt\": \"<dateTime>\",\n  \"failedAt\": \"<dateTime>\",\n  \"estimatedCompletionTime\": \"<dateTime>\",\n  \"cancellationReason\": \"<string>\",\n  \"failureReason\": \"<string>\",\n  \"failureCode\": \"<string>\",\n  \"processingTime\": \"<integer>\",\n  \"metadata\": {\n    \"key_0\": false\n  },\n  \"links\": {\n    \"self\": \"<string>\",\n    \"status\": \"<string>\",\n    \"cancel\": \"<string>\",\n    \"retry\": \"<string>\",\n    \"transaction\": \"<string>\"\n  }\n}"
+						},
+						{
+							"name": "Bad request - Invalid input or business rule violation",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Unauthorized - Invalid or missing authentication token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Transaction not found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Conflict - Refund already exists or transaction state conflict",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Conflict",
+							"code": 409,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Unprocessable entity - Business validation failed",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+							"code": 422,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Too many requests - Rate limit exceeded",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Service unavailable - Maintenance or overload",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"transactionId\": \"txn_vi0aH\",\n  \"amount\": \"<integer>\",\n  \"currency\": \"USD\",\n  \"reason\": \"<string>\",\n  \"notifyCustomer\": true,\n  \"metadata\": {\n    \"key_0\": 4821,\n    \"key_1\": 5311\n  }\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/refunds",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									]
+								}
+							},
+							"status": "Service Unavailable",
+							"code": 503,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						}
+					]
+				},
+				{
+					"name": "List refunds",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/refunds?transactionId=txn_9x&status=pending&startDate=<dateTime>&endDate=<dateTime>&page=1&pageSize=20",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"refunds"
+							],
+							"query": [
+								{
+									"key": "transactionId",
+									"value": "txn_9x",
+									"description": "Filter refunds by transaction ID"
+								},
+								{
+									"key": "status",
+									"value": "pending",
+									"description": "Filter refunds by status"
+								},
+								{
+									"key": "startDate",
+									"value": "<dateTime>",
+									"description": "Filter refunds created on or after this date"
+								},
+								{
+									"key": "endDate",
+									"value": "<dateTime>",
+									"description": "Filter refunds created on or before this date"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number for pagination (1-based)"
+								},
+								{
+									"key": "pageSize",
+									"value": "20",
+									"description": "Number of items per page"
+								}
+							]
+						},
+						"description": "Retrieves a paginated list of refunds. Supports filtering by transaction ID,\nstatus, date range, and amount range. Results are sorted by creation date\nin descending order (newest first).\n"
+					},
+					"response": [
+						{
+							"name": "Successful response with refund list",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/refunds?transactionId=txn_9x&status=pending&startDate=<dateTime>&endDate=<dateTime>&page=1&pageSize=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									],
+									"query": [
+										{
+											"key": "transactionId",
+											"value": "txn_9x",
+											"description": "Filter refunds by transaction ID"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "Filter refunds by status"
+										},
+										{
+											"key": "startDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or after this date"
+										},
+										{
+											"key": "endDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or before this date"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination (1-based)"
+										},
+										{
+											"key": "pageSize",
+											"value": "20",
+											"description": "Number of items per page"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"refunds\": [\n    {\n      \"refundId\": \"rfnd_44NoAomB\",\n      \"transactionId\": \"txn_8fo5ge\",\n      \"status\": \"pending\",\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\",\n      \"refundAmount\": \"<integer>\",\n      \"refundCurrency\": \"<string>\",\n      \"reason\": \"<string>\",\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"completedAt\": \"<dateTime>\",\n      \"cancelledAt\": \"<dateTime>\",\n      \"failedAt\": \"<dateTime>\",\n      \"estimatedCompletionTime\": \"<dateTime>\",\n      \"cancellationReason\": \"<string>\",\n      \"failureReason\": \"<string>\",\n      \"failureCode\": \"<string>\",\n      \"processingTime\": \"<integer>\",\n      \"metadata\": {\n        \"key_0\": false,\n        \"key_1\": 6463\n      },\n      \"links\": {\n        \"self\": \"<string>\",\n        \"status\": \"<string>\",\n        \"cancel\": \"<string>\",\n        \"retry\": \"<string>\",\n        \"transaction\": \"<string>\"\n      }\n    },\n    {\n      \"refundId\": \"rfnd_3H0XnSPcNn\",\n      \"transactionId\": \"txn_g2xulRwC\",\n      \"status\": \"failed\",\n      \"amount\": \"<integer>\",\n      \"currency\": \"<string>\",\n      \"refundAmount\": \"<integer>\",\n      \"refundCurrency\": \"<string>\",\n      \"reason\": \"<string>\",\n      \"createdAt\": \"<dateTime>\",\n      \"updatedAt\": \"<dateTime>\",\n      \"completedAt\": \"<dateTime>\",\n      \"cancelledAt\": \"<dateTime>\",\n      \"failedAt\": \"<dateTime>\",\n      \"estimatedCompletionTime\": \"<dateTime>\",\n      \"cancellationReason\": \"<string>\",\n      \"failureReason\": \"<string>\",\n      \"failureCode\": \"<string>\",\n      \"processingTime\": \"<integer>\",\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": true\n      },\n      \"links\": {\n        \"self\": \"<string>\",\n        \"status\": \"<string>\",\n        \"cancel\": \"<string>\",\n        \"retry\": \"<string>\",\n        \"transaction\": \"<string>\"\n      }\n    }\n  ],\n  \"pagination\": {\n    \"page\": \"<integer>\",\n    \"pageSize\": \"<integer>\",\n    \"totalPages\": \"<integer>\",\n    \"totalItems\": \"<integer>\",\n    \"hasNext\": \"<boolean>\",\n    \"hasPrevious\": \"<boolean>\"\n  }\n}"
+						},
+						{
+							"name": "Bad request - Invalid input",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/refunds?transactionId=txn_9x&status=pending&startDate=<dateTime>&endDate=<dateTime>&page=1&pageSize=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									],
+									"query": [
+										{
+											"key": "transactionId",
+											"value": "txn_9x",
+											"description": "Filter refunds by transaction ID"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "Filter refunds by status"
+										},
+										{
+											"key": "startDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or after this date"
+										},
+										{
+											"key": "endDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or before this date"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination (1-based)"
+										},
+										{
+											"key": "pageSize",
+											"value": "20",
+											"description": "Number of items per page"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Unauthorized - Invalid or missing authentication",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/refunds?transactionId=txn_9x&status=pending&startDate=<dateTime>&endDate=<dateTime>&page=1&pageSize=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									],
+									"query": [
+										{
+											"key": "transactionId",
+											"value": "txn_9x",
+											"description": "Filter refunds by transaction ID"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "Filter refunds by status"
+										},
+										{
+											"key": "startDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or after this date"
+										},
+										{
+											"key": "endDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or before this date"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination (1-based)"
+										},
+										{
+											"key": "pageSize",
+											"value": "20",
+											"description": "Number of items per page"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Too many requests - Rate limit exceeded",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/refunds?transactionId=txn_9x&status=pending&startDate=<dateTime>&endDate=<dateTime>&page=1&pageSize=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									],
+									"query": [
+										{
+											"key": "transactionId",
+											"value": "txn_9x",
+											"description": "Filter refunds by transaction ID"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "Filter refunds by status"
+										},
+										{
+											"key": "startDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or after this date"
+										},
+										{
+											"key": "endDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or before this date"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination (1-based)"
+										},
+										{
+											"key": "pageSize",
+											"value": "20",
+											"description": "Number of items per page"
+										}
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						},
+						{
+							"name": "Internal server error",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/refunds?transactionId=txn_9x&status=pending&startDate=<dateTime>&endDate=<dateTime>&page=1&pageSize=20",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"refunds"
+									],
+									"query": [
+										{
+											"key": "transactionId",
+											"value": "txn_9x",
+											"description": "Filter refunds by transaction ID"
+										},
+										{
+											"key": "status",
+											"value": "pending",
+											"description": "Filter refunds by status"
+										},
+										{
+											"key": "startDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or after this date"
+										},
+										{
+											"key": "endDate",
+											"value": "<dateTime>",
+											"description": "Filter refunds created on or before this date"
+										},
+										{
+											"key": "page",
+											"value": "1",
+											"description": "Page number for pagination (1-based)"
+										},
+										{
+											"key": "pageSize",
+											"value": "20",
+											"description": "Number of items per page"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"error\": \"<string>\",\n  \"message\": \"<string>\",\n  \"code\": \"RESOURCE_NOT_FOUND\",\n  \"timestamp\": \"<dateTime>\",\n  \"details\": {\n    \"key_0\": \"string\",\n    \"key_1\": \"string\"\n  }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "health",
+			"item": [
+				{
+					"name": "Health check",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						},
+						"description": "Returns the health status of the refund service. Useful for monitoring\nand load balancer health checks.\n"
+					},
+					"response": [
+						{
+							"name": "Service is healthy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/health",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"unhealthy\",\n  \"timestamp\": \"<dateTime>\",\n  \"version\": \"<string>\",\n  \"services\": {\n    \"database\": \"<string>\",\n    \"paymentGateway\": \"<string>\",\n    \"notificationService\": \"<string>\"\n  }\n}"
+						},
+						{
+							"name": "Service is unhealthy",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "<token>",
+										"description": "Added as a part of security scheme: oauth2"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/health",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"health"
+									]
+								}
+							},
+							"status": "Service Unavailable",
+							"code": 503,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"status\": \"unhealthy\",\n  \"timestamp\": \"<dateTime>\",\n  \"version\": \"<string>\",\n  \"services\": {\n    \"database\": \"<string>\",\n    \"paymentGateway\": \"<string>\"\n  }\n}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "scope",
+				"value": "refunds:read refunds:write refunds:admin",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "https://auth.example.com/oauth2/token",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "https://auth.example.com/oauth2/authorize",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "authorization_code",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Pre-request script for JWT authentication via client credentials",
+					"const clientId = pm.environment.get('client_id');",
+					"const clientSecret = pm.environment.get('client_secret');",
+					"const tokenUrl = pm.environment.get('token_url');",
+					"",
+					"const cachedToken = pm.environment.get('jwt_token');",
+					"const tokenExpiry = pm.environment.get('token_expiry');",
+					"if (cachedToken && tokenExpiry && Date.now() < tokenExpiry) {",
+					"    pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${cachedToken}` });",
+					"    return;",
+					"}",
+					"",
+					"pm.sendRequest({",
+					"    url: tokenUrl,",
+					"    method: 'POST',",
+					"    header: {",
+					"        'Content-Type': 'application/x-www-form-urlencoded'",
+					"    },",
+					"    body: {",
+					"        mode: 'urlencoded',",
+					"        urlencoded: [",
+					"            {key: 'grant_type', value: 'client_credentials'},",
+					"            {key: 'client_id', value: clientId},",
+					"            {key: 'client_secret', value: clientSecret}",
+					"        ]",
+					"    }",
+					"}, (err, response) => {",
+					"    if (err) {",
+					"        console.error('Token request failed:', err);",
+					"        return;",
+					"    }",
+					"",
+					"    const jsonData = response.json();",
+					"    const token = jsonData.access_token;",
+					"    if (!token) {",
+					"        console.error('No access_token in response');",
+					"        return;",
+					"    }",
+					"    pm.environment.set('jwt_token', token);",
+					"    pm.environment.set('token_expiry', Date.now() + (jsonData.expires_in * 1000));",
+					"    pm.request.headers.upsert({ key: 'Authorization', value: `Bearer ${token}` });",
+					"});"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://api.payments.example.com/v2"
+		}
+	]
+}

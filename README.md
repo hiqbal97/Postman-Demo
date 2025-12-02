@@ -32,18 +32,19 @@
 
 **Business Value**
 - Problem: Integrating a single refund API took 47 minutes (6 systems, 3 dead ends, personal workspace fallback). Typical internal API discovery takes 2–4 hours because specs, collections, environments, and auth are fragmented or inconsistent.
-- Outcome: The workflow programmatically uploads OpenAPI specs, regenerates collections, injects a JWT client-credentials flow, upserts all environments, deduplicates old specs/collections, and enforces naming/structure/auth. CloudFormation export → GitHub → Postman means engineers start with a working, authenticated request in seconds instead of hours.
+- Outcome: The workflow programmatically uploads OpenAPI specs, regenerates collections, inserts a JWT client-credentials flow, creates all environments, dedupes old specs/collections, and makes sure the naming/structure/auth is correct. CloudFormation tempale exports to GitHub which then uses the script to ingest into Postman means engineers start with a working, authenticated request in seconds instead of hours.
 
 **ROI**
-- Baseline savings from the 47-minute effort: 0.78 hours × 14 engineers = 10.92 hours/week → ~$1,638/week at $150/hr → ~$85,176/year.
-- Broader impact: applies across ~47 APIs, cutting discovery-to-first-call from 2–4 hours to seconds; reduces onboarding/testing/integration time and reliance on tribal knowledge.
+- Baseline savings (arbitrary hourly cost) from the 47-minute effort: 0.78 hours × 14 engineers = 10.92 hours/week → ~$1,092/week at $100/hr → ~$56,784/year.
+- Broader impact: applies across all 47 APIs, cutting discovery-to-first-call from 2–4 hours to seconds; reduces onboarding/testing/integration time and reliance on tribal knowledge.
 
 **Scaling Strategy**
 - CloudFormation monitors API Gateway and auto-exports OpenAPI YAML to GitHub.
-- GitHub Actions + ingestion script handle: spec creation, duplicate removal, collection regeneration, JWT pre-request dumped in and environment creation (if not already created)
-- No per-API customization needed; new/updated APIs will flow into Postman consistently.
+- GitHub Actions + ingestion script handle: spec creation, duplicate removal, collection regeneration, JWT pre-request enforcement, environment creation.
+- No per-API customization needed; new/updated APIs flow into Postman consistently.
 
 **Workspace Consolidation**
 - Current state: hundreds of shared workspaces, inconsistent naming/ownership, scattered collections.
-- Approach: adopt Postman team merge/governance; shift to domain workspaces (Payments, Auth, Risk, Ledger, etc.); move existing collections/specs into domain workspaces; treat ingestion automation as the source of truth; assign clear owners (eng lead + PM).
-- Result: reduced sprawl, better coverage, predictable discovery paths for every internal API.
+- Segmentation: shift to domain workspaces (Payments, Auth, Risk, Ledger, Data, etc.); move existing collections/specs into the matching domain; keep personal/experimental work in sandboxes, not shared workspaces.
+- Governance: use Postman team merge/governance; ingestion automation is the source of truth for collections/specs; enforce naming, auth, and environment standards; assign workspace owners (eng lead + PM) accountable for hygiene; run periodic reviews to deprecate stale collections.
+- Result: reduced sprawl, clearer ownership, predictable discovery paths, and consistent auth/env across every internal API.

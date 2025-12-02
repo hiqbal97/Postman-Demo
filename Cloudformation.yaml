@@ -1,0 +1,130 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Ultra-minimal API Gateway change detector -> GitHub exporter.
+
+Parameters:
+  GitHubRepo:
+    Type: String
+  GitHubTokenSecretArn:
+    Type: String
+
+Resources:
+
+  ApiGatewayChangeRule:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source: ["aws.apigateway"]
+        detail-type: ["AWS API Call via CloudTrail"]
+        detail:
+          eventSource: ["apigateway.amazonaws.com"]
+          eventName:
+            - CreateRestApi
+            - UpdateRestApi
+            - PutMethod
+            - PutIntegration
+            - CreateDeployment
+      Targets:
+        - Arn: !GetAtt ExportLambda.Arn
+          Id: Target
+
+  PermissionForEvents:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref ExportLambda
+      Action: lambda:InvokeFunction
+      Principal: events.amazonaws.com
+      SourceArn: !GetAtt ApiGatewayChangeRule.Arn
+
+  ExportLambdaRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal: { Service: lambda.amazonaws.com }
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: MinimalPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: apigateway:GET
+                Resource: "*"
+              - Effect: Allow
+                Action: secretsmanager:GetSecretValue
+                Resource: !Ref GitHubTokenSecretArn
+              - Effect: Allow
+                Action: logs:CreateLogGroup
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+
+  ExportLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      Runtime: python3.11
+      Handler: index.handler
+      Role: !GetAtt ExportLambdaRole.Arn
+      Timeout: 15
+      Environment:
+        Variables:
+          GITHUB_REPO: !Ref GitHubRepo
+          GITHUB_TOKEN_SECRET_ARN: !Ref GitHubTokenSecretArn
+      Code:
+        ZipFile: |
+          import json, boto3, base64, os
+          from urllib import request
+
+          apigw = boto3.client("apigateway")
+          secrets = boto3.client("secretsmanager")
+
+          def handler(event, context):
+              detail = event.get("detail", {})
+              api_id = detail.get("requestParameters", {}).get("restApiId")
+              if not api_id:
+                  return
+
+              export = apigw.get_export(
+                  restApiId=api_id,
+                  stageName="prod",
+                  exportType="oas30",
+                  accepts="application/yaml"
+              )
+              yaml_doc = export["body"].read().decode()
+
+              token = secrets.get_secret_value(
+                  SecretId=os.environ["GITHUB_TOKEN_SECRET_ARN"]
+              )["SecretString"]
+
+              repo = os.environ["GITHUB_REPO"]
+              url = f"https://api.github.com/repos/{repo}/contents/{api_id}.yaml"
+
+              try:
+                  r = request.urlopen(request.Request(url, headers={"Authorization": f"token {token}"}))
+                  sha = json.loads(r.read()).get("sha")
+              except:
+                  sha = None
+
+              payload = {
+                  "message": f"API update for {api_id}",
+                  "content": base64.b64encode(yaml_doc.encode()).decode()
+              }
+              if sha:
+                  payload["sha"] = sha
+
+              req = request.Request(
+                  url,
+                  data=json.dumps(payload).encode(),
+                  headers={"Authorization": f"token {token}", "Content-Type": "application/json"},
+                  method="PUT"
+              )
+              request.urlopen(req).read()
+
+Outputs:
+  LambdaArn:
+    Value: !GetAtt ExportLambda.Arn
