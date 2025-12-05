@@ -315,6 +315,7 @@ if __name__ == "__main__":
                 if spec.get("name") == spec_name and spec.get("id"):
                     print(f"Deleting old spec '{spec_name}' ({spec.get('id')})")
                     delete_spec(spec.get("id"))
+                    break
 
             print(f"Creating spec '{spec_name}' from {spec_file}")
             spec_response = create_spec(spec_name, spec_file, WORKSPACE_ID)
