@@ -698,6 +698,99 @@ paths:
         '500':
           $ref: '#/components/responses/InternalServerError'
 
+  /refunds/{refundId}/reinstate:
+    post:
+      tags:
+        - Refunds
+      summary: Reinstate a cancelled refund
+      description: |
+        Reopens a refund that was cancelled while in 'pending' status, moving it
+        back to 'pending' so processing can resume. Refunds in other statuses
+        cannot be reinstated.
+      operationId: reinstateRefund
+      parameters:
+        - $ref: '#/components/parameters/RefundId'
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: string
+                  description: Reason for reinstating the refund
+                  example: "Customer confirmed they still want the refund"
+            examples:
+              reinstate_reason:
+                summary: Reinstate with reason
+                value:
+                  reason: "Customer confirmed they still want the refund"
+      responses:
+        '200':
+          description: Refund reinstated to pending
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RefundResponse'
+              examples:
+                reinstated_refund:
+                  summary: Refund reinstated
+                  value:
+                    refundId: "rfnd_xyz789ghi012"
+                    transactionId: "txn_0987654321fedcba"
+                    status: "pending"
+                    amount: 5000
+                    currency: "USD"
+                    refundAmount: 2500
+                    refundCurrency: "USD"
+                    reason: "Partial refund for damaged item"
+                    createdAt: "2024-01-15T11:00:00Z"
+                    updatedAt: "2024-01-15T12:00:00Z"
+                    cancellationReason: "Customer changed mind and wants to keep the item"
+                    links:
+                      self: "/refunds/rfnd_xyz789ghi012"
+                      status: "/refunds/rfnd_xyz789ghi012/status"
+                      cancel: "/refunds/rfnd_xyz789ghi012/cancel"
+        '400':
+          description: Bad request - Cannot reinstate refund
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                cannot_reinstate:
+                  summary: Cannot reinstate non-cancelled refund
+                  value:
+                    error: "REFUND_CANNOT_BE_REINSTATED"
+                    message: "Only refunds in 'cancelled' status can be reinstated"
+                    details:
+                      refundId: "rfnd_abc123def456"
+                      currentStatus: "completed"
+                      allowedStatuses: ["cancelled"]
+                    code: "BUSINESS_RULE_VIOLATION"
+                    timestamp: "2024-01-15T12:00:00Z"
+        '404':
+          description: Refund not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                refund_not_found:
+                  summary: Refund does not exist
+                  value:
+                    error: "REFUND_NOT_FOUND"
+                    message: "The specified refund was not found"
+                    details:
+                      refundId: "rfnd_invalid123"
+                    code: "RESOURCE_NOT_FOUND"
+                    timestamp: "2024-01-15T12:00:00Z"
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
   /health:
     get:
       tags:
@@ -1255,5 +1348,4 @@ components:
                   requestId: "req_abc123def456"
                 code: "SERVER_ERROR"
                 timestamp: "2024-01-15T10:30:00Z"
-
 
