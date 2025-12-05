@@ -311,10 +311,15 @@ if __name__ == "__main__":
             collection_name = f"{spec_name} Collection"
 
             # delete older spec with same title
-            for spec in existing_specs:
-                if spec.get("name") == spec_name and spec.get("id"):
-                    print(f"Deleting old spec '{spec_name}' ({spec.get('id')})")
-                    delete_spec(spec.get("id"))
+            for spec in list(existing_specs):
+                spec_id = spec.get("id") or spec.get("uid")
+                if spec.get("name") == spec_name and spec_id:
+                    print(f"Deleting old spec '{spec_name}' ({spec_id})")
+                    delete_spec(spec_id)
+                    # remove from local list so we don't try to delete again for same name
+                    existing_specs = [
+                        s for s in existing_specs if (s.get("id") or s.get("uid")) != spec_id
+                    ]
                     break
 
             print(f"Creating spec '{spec_name}' from {spec_file}")
