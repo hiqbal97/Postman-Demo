@@ -270,7 +270,7 @@ def create_environment(name, base_url, workspace_id):
         "environment": {
             "name": name,
             "values": [
-                {"key": "base_url", "value": base_url, "enabled": True, "type": "default"}
+                {"key": "baseUrl", "value": base_url, "enabled": True, "type": "default"}
             ],
         }
     }
